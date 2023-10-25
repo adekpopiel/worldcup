@@ -99,6 +99,13 @@ class StartGameTest {
     }
 
     @Test
+    public void testGameIsNotNull() {
+        GameValidationException exception = assertThrows(
+                GameValidationException.class, () -> startGameUseCase.startGame(null));
+        assertTrue(exception.getMessage().contains(GAME_CANNOT_BE_NULL));
+
+    }
+    @Test
     public void testGameHomeTeamIsNotNull() {
         Game game = Game.builder()
                 .visitors("Y")
