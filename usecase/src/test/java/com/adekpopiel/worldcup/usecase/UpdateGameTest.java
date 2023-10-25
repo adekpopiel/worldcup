@@ -160,4 +160,37 @@ class UpdateGameTest {
                 GameNotFoundException.class,
                 () -> updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate));
     }
+    @Test
+    public void testThrowsIllegalArgumentExceptionIfGameIdIsNull() {
+        //given
+        Integer homeTeamScoreForUpdate = 2;
+        Integer visitorsScoreForUpdate = 2;
+        //when
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> updateGameUseCase.updateGame(null, homeTeamScoreForUpdate, visitorsScoreForUpdate));
+    }
+
+    @Test
+    public void testThrowsIllegalArgumentExceptionIfHomeTeamScoreIsNull() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        Integer visitorsScoreForUpdate = 2;
+        //when
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> updateGameUseCase.updateGame(gameId, null, visitorsScoreForUpdate));
+    }
+
+    @Test
+    public void testThrowsIllegalArgumentExceptionIfVisitorsScoreIsNull() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        Integer homeTeamScoreForUpdate = 2;
+        //when
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, null));
+    }
+
 }
