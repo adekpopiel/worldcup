@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +33,13 @@ class UpdateGameTest {
         UUID gameId = UUID.randomUUID();
         Integer homeTeamScoreForUpdate = 2;
         Integer visitorsScoreForUpdate = 2;
+        Game originalGame = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors("Y")
+                .build();
         //when
+        when(gameRepository.findGameById(gameId)).thenReturn(originalGame);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
         verify(gameRepository).update(any(Game.class));
@@ -53,7 +60,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getHomeTeamScore() == gameForUpdate.getVisitorsScore()));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getHomeTeamScore(), gameForUpdate.getVisitorsScore())));
     }
 
     @Test
@@ -71,7 +78,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getVisitorsScore() == gameForUpdate.getVisitorsScore()));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getVisitorsScore(), gameForUpdate.getVisitorsScore())));
     }
 
     @Test
@@ -89,7 +96,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getId() == gameId));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getId(), gameId)));
     }
 
     @Test
@@ -108,7 +115,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getStartTime() == gameForUpdate.getStartTime()));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getStartTime(), gameForUpdate.getStartTime())));
     }
 
     @Test
@@ -127,7 +134,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getHomeTeam() == gameForUpdate.getHomeTeam()));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getHomeTeam(), gameForUpdate.getHomeTeam())));
     }
 
     @Test
@@ -146,7 +153,7 @@ class UpdateGameTest {
         when(gameRepository.findGameById(gameId)).thenReturn(gameForUpdate);
         updateGameUseCase.updateGame(gameId, homeTeamScoreForUpdate, visitorsScoreForUpdate);
         //then
-        verify(gameRepository).update(argThat((Game game) -> game.getVisitors() == gameForUpdate.getVisitors()));
+        verify(gameRepository).update(argThat((Game game) -> Objects.equals(game.getVisitors(), gameForUpdate.getVisitors())));
     }
 
     @Test
