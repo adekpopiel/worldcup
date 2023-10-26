@@ -13,12 +13,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FinishGameTest {
 
+    public static final String GAME_ID_CANNOT_BE_NULL = "Input parameter cannot be null: gameId";
     @InjectMocks
     private FinishGame finishGameUseCase;
 
@@ -65,6 +67,7 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getId(), gameId)));
     }
@@ -81,6 +84,7 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getHomeTeam(), homeTeam)));
     }
@@ -97,6 +101,7 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getVisitors(), visitorsTeam)));
     }
@@ -114,6 +119,7 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getVisitorsScore(), visitorsScore)));
     }
@@ -131,6 +137,7 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getHomeTeamScore(), homeTeamScore)));
     }
@@ -148,7 +155,18 @@ public class FinishGameTest {
                 .build();
         //when
         when(gameRepository.findGameById(gameId)).thenReturn(gameForRemoval);
+        finishGameUseCase.finishGame(gameId);
         //then
         verify(gameRepository).remove(argThat((Game game) -> Objects.equals(game.getStartTime(), startDate)));
+    }
+
+    @Test
+    public void testInputGameIdCannotBeNull() {
+        //given
+        //when
+        //then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> finishGameUseCase.finishGame(null));
+        assertEquals(exception.getMessage(), GAME_ID_CANNOT_BE_NULL);
+
     }
 }
