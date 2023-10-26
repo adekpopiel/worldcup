@@ -13,11 +13,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -151,6 +153,102 @@ class StartGameTest {
 
     }
 
+    @Test
+    public void testGameForCreateHasProperHomeTeamScoreSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        Integer homeTeamScore = 0;
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors("Y")
+                .homeTeamScore(homeTeamScore)
+                .build();
+        //when
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getHomeTeamScore(), gameForCreate.getHomeTeamScore())));
+    }
 
+    @Test
+    public void testGameForCreateHasProperVisitorsScoreSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        Integer visitorsTeamScore = 0;
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors("Y")
+                .visitorsScore(visitorsTeamScore)
+                .build();
+        //when
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getVisitorsScore(), gameForCreate.getVisitorsScore())));
+    }
 
+    @Test
+    public void testGameForCreateHasProperIdSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors("Y")
+                .build();
+        //when
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getId(), gameForCreate.getId())));
+    }
+
+    @Test
+    public void testGameForCreateHasStartTimeSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        String startTime = "2020-07-10 15:00:00.000";
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors("Y")
+                .build();
+        //when
+        when(dateFormatter.formatDate(any(Date.class))).thenReturn(startTime);
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getStartTime(), startTime)));
+    }
+
+    @Test
+    public void testGameForCreateHasHomeTeamNameSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        String homeTeam = "X";
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam(homeTeam)
+                .visitors("Y")
+                .build();
+        //when
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getHomeTeam(), homeTeam)));
+    }
+
+    @Test
+    public void testGameForCreateHasVisitorsTeamNameSet() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        String visitorsTeam = "Y";
+        Game gameForCreate = Game.builder()
+                .id(gameId)
+                .homeTeam("X")
+                .visitors(visitorsTeam)
+                .build();
+        //when
+        startGameUseCase.startGame(gameForCreate);
+        //then
+        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getVisitors(), visitorsTeam)));
+    }
+    
 }
