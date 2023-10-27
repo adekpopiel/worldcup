@@ -1,6 +1,7 @@
 package com.adekpopiel.worldcup.usecase;
 
 import com.adekpopiel.worldcup.domain.entity.Game;
+import com.adekpopiel.worldcup.usecase.port.DateFormatter;
 import com.adekpopiel.worldcup.usecase.port.GameRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,10 +31,11 @@ public class PrintGameTest {
     private PrintGame printGameUseCase;
 
     @Mock
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     @Mock
-    PrintStream printStream;
+    private DateFormatter dateFormatter;
+
     private static String printGameWithTotalScore10;
     private static String printGameWithTotalScore8;
     private static String printGameWithTotalScore8Earlier;
@@ -83,8 +87,8 @@ public class PrintGameTest {
                 .build();
         Game gameWithTotalScore10Later = Game.builder()
                 .id(UUID.randomUUID())
-                .homeTeam("P")
-                .visitors("R")
+                .homeTeam("Argentina")
+                .visitors("Australia")
                 .homeTeamScore(5)
                 .visitorsScore(5)
                 .startTime("2020-07-10 17:00:00.000")
@@ -95,7 +99,7 @@ public class PrintGameTest {
                 gameWithTotalScore5,
                 gameWithTotalScore10,
                 gameWithTotalScore8);
-        Collections.addAll(listOfGamesWithDifferentTotalScores,
+        Collections.addAll(listOfGamesWithSameTotalScoresButDifferentStartTime,
                 gameWithTotalScore10,
                 gameWithTotalScore10Later);
         Collections.addAll(listOfAllGames,
@@ -143,54 +147,60 @@ public class PrintGameTest {
     @Test
     public void testPrintAllGamesDescendingToTheTotalScore() {
         //given
-        String expectedScoreboard = printGameWithTotalScore10 + "\n" + printGameWithTotalScore8 + "\n" + printGameWithTotalScore5;
+        String expectedScoreboard = printGameWithTotalScore10 + "\n" + printGameWithTotalScore8 + "\n" + printGameWithTotalScore5 + "\n";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        printGameUseCase.setPrintStream(printStream);
         //when
         when(gameRepository.findAllGames()).thenReturn(listOfGamesWithDifferentTotalScores);
         printGameUseCase.printScoreboard();
         //then
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(printStream).println(captor.capture());
-
-        assertEquals(expectedScoreboard, captor.getValue());
+       assertEquals(expectedScoreboard, outputStream.toString());
     }
 
     @Test
     public void testNoPrintEmptyScoreboardIfThereAreNoGamesInProgress() {
+        //given
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        printGameUseCase.setPrintStream(printStream);
         //when
         when(gameRepository.findAllGames()).thenReturn(Collections.emptyList());
         printGameUseCase.printScoreboard();
         //then
-        verify(printStream, never());
+        assertEquals("",outputStream.toString());
     }
 
     @Test
     public void testPrintGamesWithEqualTotalScoreOrderByTheRecentStartTime() {
         //given
-        String expectedScoreboard = printGameWithTotalScore10Later + "\n" + printGameWithTotalScore10;
+        String expectedScoreboard = printGameWithTotalScore10Later + "\n" + printGameWithTotalScore10 + "\n";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        printGameUseCase.setPrintStream(printStream);
         //when
+        when(dateFormatter.getFormatterString()).thenReturn("yyyy-MM-dd HH:mm:ss.SSS");
         when(gameRepository.findAllGames()).thenReturn(listOfGamesWithSameTotalScoresButDifferentStartTime);
         printGameUseCase.printScoreboard();
         //then
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(printStream).println(captor.capture());
-
-        assertEquals(expectedScoreboard, captor.capture());
+        assertEquals(expectedScoreboard, outputStream.toString());
     }
 
     @Test
     public void testPrintGamesWithDifferentTimesAndTotalScores() {
         //given
         String expectedScoreboard = printGameWithTotalScore10Later + "\n" + printGameWithTotalScore10
-                + "\n" + printGameWithTotalScore8Earlier + "\n" + printGameWithTotalScore8
-                + "\n" + printGameWithTotalScore5;
+                + "\n" + printGameWithTotalScore8 + "\n" + printGameWithTotalScore8Earlier
+                + "\n" + printGameWithTotalScore5 + "\n";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        printGameUseCase.setPrintStream(printStream);
         //when
+        when(dateFormatter.getFormatterString()).thenReturn("yyyy-MM-dd HH:mm:ss.SSS");
         when(gameRepository.findAllGames()).thenReturn(listOfAllGames);
         printGameUseCase.printScoreboard();
         //then
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(printStream).println(captor.capture());
-
-        assertEquals(expectedScoreboard, captor.capture());
+        assertEquals(expectedScoreboard, outputStream.toString());
     }
 
 }
