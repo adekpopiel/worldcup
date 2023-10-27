@@ -93,6 +93,10 @@ public class Game {
         return startTime;
     }
 
+    public Integer getTotalScore() {
+        return homeTeamScore + visitorsScore;
+    }
+
     @Override
     public String toString() {
         return "GameBuilder{" +
