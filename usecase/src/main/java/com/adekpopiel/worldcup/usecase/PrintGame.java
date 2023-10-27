@@ -14,8 +14,6 @@ import java.util.function.Supplier;
 
 public class PrintGame {
 
-    private static final String GAME_TEMPLATE = "%s %d - %s %d";
-
     private GameRepository gameRepository;
     private PrintStream printStream;
     private DateFormatter dateFormatter;
@@ -30,11 +28,7 @@ public class PrintGame {
 
     private Consumer<Game> printGame() {
         Supplier<Consumer<Game>> consumerSupplier = () -> game -> {
-            printStream.printf((GAME_TEMPLATE) + "\n",
-                    game.getHomeTeam(),
-                    game.getHomeTeamScore(),
-                    game.getVisitors(),
-                    game.getVisitorsScore());
+            printStream.println(game);
         };
         return consumerSupplier.get();
     }
