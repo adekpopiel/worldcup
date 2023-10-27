@@ -3,6 +3,7 @@ package com.adekpopiel.worldcup.domain.entity;
 import java.util.UUID;
 
 public class Game {
+    private static final String GAME_TEMPLATE = "%s %d - %s %d";
     private UUID id;
     private String homeTeam;
     private String visitors;
@@ -99,13 +100,10 @@ public class Game {
 
     @Override
     public String toString() {
-        return "GameBuilder{" +
-                "id=" + id +
-                ", homeTeam='" + homeTeam + '\'' +
-                ", visitors='" + visitors + '\'' +
-                ", homeTeamScore=" + homeTeamScore +
-                ", visitorsScore=" + visitorsScore +
-                ", startTime='" + startTime + '\'' +
-                '}';
+        return String.format(GAME_TEMPLATE,
+                homeTeam,
+                homeTeamScore,
+                visitors,
+                visitorsScore);
     }
 }
