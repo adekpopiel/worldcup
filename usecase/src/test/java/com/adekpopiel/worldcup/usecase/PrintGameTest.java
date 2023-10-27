@@ -109,31 +109,11 @@ public class PrintGameTest {
                 gameWithTotalScore10,
                 gameWithTotalScore10Later);
 
-        printGameWithTotalScore10 = String.format(GAME_TEMPLATE,
-                gameWithTotalScore10.getHomeTeam(),
-                gameWithTotalScore10.getHomeTeamScore(),
-                gameWithTotalScore10.getVisitors(),
-                gameWithTotalScore10.getVisitorsScore());
-        printGameWithTotalScore8 = String.format(GAME_TEMPLATE,
-                gameWithTotalScore8.getHomeTeam(),
-                gameWithTotalScore8.getHomeTeamScore(),
-                gameWithTotalScore8.getVisitors(),
-                gameWithTotalScore8.getVisitorsScore());
-        printGameWithTotalScore8Earlier = String.format(GAME_TEMPLATE,
-                gameWithTotalScore8Earlier.getHomeTeam(),
-                gameWithTotalScore8Earlier.getHomeTeamScore(),
-                gameWithTotalScore8Earlier.getVisitors(),
-                gameWithTotalScore8Earlier.getVisitorsScore());
-        printGameWithTotalScore5 = String.format(GAME_TEMPLATE,
-                gameWithTotalScore5.getHomeTeam(),
-                gameWithTotalScore5.getHomeTeamScore(),
-                gameWithTotalScore5.getVisitors(),
-                gameWithTotalScore5.getVisitorsScore());
-        printGameWithTotalScore10Later = String.format(GAME_TEMPLATE,
-                gameWithTotalScore10Later.getHomeTeam(),
-                gameWithTotalScore10Later.getHomeTeamScore(),
-                gameWithTotalScore10Later.getVisitors(),
-                gameWithTotalScore10Later.getVisitorsScore());
+        printGameWithTotalScore10 = gameWithTotalScore10.toString();
+        printGameWithTotalScore8 = gameWithTotalScore8.toString();
+        printGameWithTotalScore8Earlier = gameWithTotalScore8Earlier.toString();
+        printGameWithTotalScore5 = gameWithTotalScore5.toString();
+        printGameWithTotalScore10Later = gameWithTotalScore10Later.toString();
     }
 
     @Test
