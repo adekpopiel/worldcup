@@ -64,6 +64,20 @@ class GameControllerTest {
     }
 
     @Test
+    public void testGameStartedHasProperId() {
+        //given
+        UUID gameId = UUID.randomUUID();
+        GameDto newGame = new GameDto();
+        newGame.setId(gameId);
+        Game expectedGame = Game.builder().id(gameId).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getId(), gameId);
+    }
+
+    @Test
     public void testGameForStartHasProperHomeTeam() {
         //given
         String homeTeamName = "X";
@@ -75,6 +89,20 @@ class GameControllerTest {
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getHomeTeam(), homeTeamName)));
+    }
+
+    @Test
+    public void testGameStartedHasProperHomeTeam() {
+        //given
+        String homeTeamName = "X";
+        GameDto newGame = new GameDto();
+        newGame.setHomeTeam(homeTeamName);
+        Game expectedGame = Game.builder().homeTeam(homeTeamName).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getHomeTeam(), homeTeamName);
     }
 
     @Test
@@ -92,6 +120,20 @@ class GameControllerTest {
     }
 
     @Test
+    public void testGameStartedHasProperVisitorsTeam() {
+        //given
+        String visitorsTeamName = "Y";
+        GameDto newGame = new GameDto();
+        newGame.setVisitors(visitorsTeamName);
+        Game expectedGame = Game.builder().visitors(visitorsTeamName).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getVisitors(), visitorsTeamName);
+    }
+
+    @Test
     public void testGameForStartHasProperHomeTeamScore() {
         //given
         Integer homeTeamScore = 2;
@@ -103,6 +145,21 @@ class GameControllerTest {
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getHomeTeamScore(), homeTeamScore)));
+    }
+
+    @Test
+    public void testGameStartedHasProperHomeTeamScore() {
+        //given
+        Integer homeTeamScore = 2;
+        GameDto newGame = new GameDto();
+        newGame.setHomeTeamScore(homeTeamScore);
+        Integer expectedHomeTeamScore = 0;
+        Game expectedGame = Game.builder().homeTeamScore(expectedHomeTeamScore).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getHomeTeamScore(), expectedHomeTeamScore);
     }
 
     @Test
@@ -120,6 +177,21 @@ class GameControllerTest {
     }
 
     @Test
+    public void testGameStartedHasProperVisitorsTeamScore() {
+        //given
+        Integer visitorsTeamScore = 3;
+        GameDto newGame = new GameDto();
+        newGame.setVisitorsScore(visitorsTeamScore);
+        Integer expectedVisitorsScore = 0;
+        Game expectedGame = Game.builder().visitorsScore(expectedVisitorsScore).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getVisitorsScore(), expectedVisitorsScore);
+    }
+
+    @Test
     public void testGameForStartHasProperStartTime() {
         //given
         String startTime = "2020-07-10 15:00:00.000";
@@ -131,6 +203,21 @@ class GameControllerTest {
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getStartTime(), startTime)));
+    }
+
+    @Test
+    public void testGameStartedHasProperStartTime() {
+        //given
+        String startTime = "2020-07-10 15:00:00.000";
+        GameDto newGame = new GameDto();
+        newGame.setStartTime(startTime);
+        String expectedStartTime = "2023-10-29 15:00:00.000";
+        Game expectedGame = Game.builder().startTime(expectedStartTime).build();
+        //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
+        GameDto gameReturned = gameController.startGame(newGame);
+        //then
+        assertEquals(gameReturned.getStartTime(), expectedStartTime);
     }
 
     @Test
