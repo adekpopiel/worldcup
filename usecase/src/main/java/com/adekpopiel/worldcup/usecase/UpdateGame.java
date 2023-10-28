@@ -4,9 +4,7 @@ import com.adekpopiel.worldcup.domain.entity.Game;
 import com.adekpopiel.worldcup.usecase.exception.GameNotFoundException;
 import com.adekpopiel.worldcup.usecase.port.GameRepository;
 
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class UpdateGame {
 

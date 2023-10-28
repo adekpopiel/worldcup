@@ -1,7 +1,6 @@
 package com.adekpopiel.worldcup.usecase.validation;
 
 import com.adekpopiel.worldcup.domain.entity.Game;
-import com.adekpopiel.worldcup.usecase.exception.GameAlreadyExistException;
 import com.adekpopiel.worldcup.usecase.exception.GameValidationException;
 import org.junit.jupiter.api.Test;
 
