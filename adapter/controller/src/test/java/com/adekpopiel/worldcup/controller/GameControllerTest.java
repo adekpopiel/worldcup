@@ -15,10 +15,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GameControllerTest {
+
+    private static final String GAME_CANNOT_BE_NULL = "Game cannot be null!";
 
     @InjectMocks
     private GameController gameController;
@@ -37,7 +41,9 @@ class GameControllerTest {
     public void testStartGameCallsProperUseCase() {
         //given
         GameDto newGame = new GameDto();
+        Game expectedGame = Game.builder().build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(any(Game.class));
@@ -49,7 +55,9 @@ class GameControllerTest {
         UUID gameId = UUID.randomUUID();
         GameDto newGame = new GameDto();
         newGame.setId(gameId);
+        Game expectedGame = Game.builder().id(gameId).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getId(), gameId)));
@@ -61,7 +69,9 @@ class GameControllerTest {
         String homeTeamName = "X";
         GameDto newGame = new GameDto();
         newGame.setHomeTeam(homeTeamName);
+        Game expectedGame = Game.builder().homeTeam(homeTeamName).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getHomeTeam(), homeTeamName)));
@@ -73,7 +83,9 @@ class GameControllerTest {
         String visitorsTeamName = "Y";
         GameDto newGame = new GameDto();
         newGame.setVisitors(visitorsTeamName);
+        Game expectedGame = Game.builder().visitors(visitorsTeamName).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getVisitors(), visitorsTeamName)));
@@ -85,7 +97,9 @@ class GameControllerTest {
         Integer homeTeamScore = 2;
         GameDto newGame = new GameDto();
         newGame.setHomeTeamScore(homeTeamScore);
+        Game expectedGame = Game.builder().homeTeamScore(homeTeamScore).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getHomeTeamScore(), homeTeamScore)));
@@ -97,7 +111,9 @@ class GameControllerTest {
         Integer visitorsTeamScore = 3;
         GameDto newGame = new GameDto();
         newGame.setVisitorsScore(visitorsTeamScore);
+        Game expectedGame = Game.builder().visitorsScore(visitorsTeamScore).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getVisitorsScore(), visitorsTeamScore)));
@@ -109,10 +125,22 @@ class GameControllerTest {
         String startTime = "2020-07-10 15:00:00.000";
         GameDto newGame = new GameDto();
         newGame.setStartTime(startTime);
+        Game expectedGame = Game.builder().startTime(startTime).build();
         //when
+        when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
         verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getStartTime(), startTime)));
+    }
+
+    @Test
+    public void testStartGameThrowsExceptionIfInputGameIsNull() {
+        //given
+        //when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> gameController.startGame(null));
+        //then
+        assertEquals(exception.getMessage(), GAME_CANNOT_BE_NULL);
+
     }
 
     @Test
