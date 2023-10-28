@@ -1,6 +1,7 @@
 package com.adekpopiel.worldcup.controller;
 
 import com.adekpopiel.worldcup.controller.model.GameDto;
+import com.adekpopiel.worldcup.domain.entity.Game;
 import com.adekpopiel.worldcup.usecase.FinishGame;
 import com.adekpopiel.worldcup.usecase.PrintGame;
 import com.adekpopiel.worldcup.usecase.StartGame;
@@ -28,19 +29,23 @@ public class GameController {
     }
 
     public GameDto startGame(final GameDto inputGame) {
-        return null;
+        if (inputGame == null) {
+            throw new IllegalArgumentException("Game cannot be null!");
+        }
+        Game game = inputGame.toGame();
+        return GameDto.toGameDto(startGameUseCase.startGame(game));
     }
 
     public void updateGame(final UUID gameId, Integer homeTeamScore, Integer visitorsScore) {
-
+        updateGameUseCase.updateGame(gameId, homeTeamScore, visitorsScore);
     }
 
     public void finishGame(final UUID gameIdToFinish) {
-
+        finishGameUseCase.finishGame(gameIdToFinish);
     }
 
     public void printScoreboard() {
-
+        printGameUseCase.printScoreboard();
     }
 
 
