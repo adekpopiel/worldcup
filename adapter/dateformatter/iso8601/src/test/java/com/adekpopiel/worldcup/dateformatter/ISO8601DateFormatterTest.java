@@ -35,7 +35,7 @@ class ISO8601DateFormatterTest {
     }
 
     @Test
-    public void testDateFormattingIfDateIsNull() {
+    public void testThrowsExceptionFromDateFormattingIfDateIsNull() {
         //when
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> iso8601DateFormatter.formatDate(null));
         //then
