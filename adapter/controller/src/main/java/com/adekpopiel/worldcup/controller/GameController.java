@@ -1,9 +1,12 @@
 package com.adekpopiel.worldcup.controller;
 
+import com.adekpopiel.worldcup.controller.model.GameDto;
 import com.adekpopiel.worldcup.usecase.FinishGame;
 import com.adekpopiel.worldcup.usecase.PrintGame;
 import com.adekpopiel.worldcup.usecase.StartGame;
 import com.adekpopiel.worldcup.usecase.UpdateGame;
+
+import java.util.UUID;
 
 public class GameController {
 
@@ -22,6 +25,22 @@ public class GameController {
         this.updateGameUseCase = updateGameUseCase;
         this.finishGameUseCase = finishGameUseCase;
         this.printGameUseCase = printGameUseCase;
+    }
+
+    public GameDto startGame(final GameDto inputGame) {
+        return null;
+    }
+
+    public void updateGame(final UUID gameId, Integer homeTeamScore, Integer visitorsScore) {
+
+    }
+
+    public void finishGame(final UUID gameIdToFinish) {
+
+    }
+
+    public void printScoreboard() {
+
     }
 
 
