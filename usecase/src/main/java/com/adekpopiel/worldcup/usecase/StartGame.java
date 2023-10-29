@@ -7,6 +7,7 @@ import com.adekpopiel.worldcup.usecase.port.GameRepository;
 import com.adekpopiel.worldcup.usecase.validation.GameValidator;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class StartGame {
 
@@ -15,11 +16,8 @@ public class StartGame {
 
     public Game startGame(final Game game) {
         GameValidator.validate(game);
-        if (gameRepository.findGameById(game.getId()) != null) {
-            throw new GameAlreadyExistException("Game already exists!");
-        }
         Game gameForCreate = Game.builder()
-                .id(game.getId())
+                .id(UUID.randomUUID())
                 .homeTeam(game.getHomeTeam())
                 .visitors(game.getVisitors())
                 .homeTeamScore(0)
