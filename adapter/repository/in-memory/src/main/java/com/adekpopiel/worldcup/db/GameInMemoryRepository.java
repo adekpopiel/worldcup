@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GameInMemoryRepository implements GameRepository {
 
-    private Map<UUID, Game> repository;
+    private HashMap<UUID, Game> repository;
     @Override
     public Game create(Game game) {
         return repository.put(game.getId(), game);
