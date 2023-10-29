@@ -15,8 +15,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
@@ -41,9 +40,7 @@ class StartGameTest {
     @Test
     public void testNewGameIsPersistedInRepository() {
         //given
-        UUID gameId = UUID.randomUUID();
         Game newGame = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .build();
@@ -54,26 +51,9 @@ class StartGameTest {
     }
 
     @Test
-    public void testGameExistenceIsChecked() {
-        //given
-        UUID gameId = UUID.randomUUID();
-        Game newGame = Game.builder()
-                .id(gameId)
-                .homeTeam("X")
-                .visitors("Y")
-                .build();
-        //when
-        startGameUseCase.startGame(newGame);
-        //then
-        verify(gameRepository).findGameById(gameId);
-    }
-
-    @Test
     public void testStartDateIsFormatted() {
         //given
-        UUID gameId = UUID.randomUUID();
         Game newGame = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .build();
@@ -81,22 +61,6 @@ class StartGameTest {
         startGameUseCase.startGame(newGame);
         //then
         verify(dateFormatter).formatDate(any(Date.class));
-    }
-
-    @Test
-    public void testReturnExceptionIfGameAlreadyExists() {
-        //given
-        UUID gameId = UUID.randomUUID();
-        Game newGame = Game.builder()
-                .id(gameId)
-                .homeTeam("X")
-                .visitors("Y")
-                .build();
-        //when
-        when(gameRepository.findGameById(gameId)).thenReturn(newGame);
-        GameAlreadyExistException exception = assertThrows(GameAlreadyExistException.class, () -> startGameUseCase.startGame(newGame));
-        //then
-        assertTrue(exception.getMessage().contains(GAME_ALREADY_EXISTS));
     }
 
     @Test
@@ -155,10 +119,8 @@ class StartGameTest {
     @Test
     public void testGameForCreateHasProperHomeTeamScoreSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         Integer homeTeamScore = 0;
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .homeTeamScore(homeTeamScore)
@@ -172,10 +134,8 @@ class StartGameTest {
     @Test
     public void testGameForCreateHasProperVisitorsScoreSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         Integer visitorsTeamScore = 0;
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .visitorsScore(visitorsTeamScore)
@@ -187,27 +147,23 @@ class StartGameTest {
     }
 
     @Test
-    public void testGameForCreateHasProperIdSet() {
+    public void testGameForCreateHasIdSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .build();
         //when
         startGameUseCase.startGame(gameForCreate);
         //then
-        verify(gameRepository).create(argThat((Game game) -> Objects.equals(game.getId(), gameForCreate.getId())));
+        verify(gameRepository).create(argThat((Game game) -> !Objects.isNull(game.getId())));
     }
 
     @Test
     public void testGameForCreateHasStartTimeSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         String startTime = "2020-07-10 15:00:00.000";
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors("Y")
                 .build();
@@ -221,10 +177,8 @@ class StartGameTest {
     @Test
     public void testGameForCreateHasHomeTeamNameSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         String homeTeam = "X";
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam(homeTeam)
                 .visitors("Y")
                 .build();
@@ -237,10 +191,8 @@ class StartGameTest {
     @Test
     public void testGameForCreateHasVisitorsTeamNameSet() {
         //given
-        UUID gameId = UUID.randomUUID();
         String visitorsTeam = "Y";
         Game gameForCreate = Game.builder()
-                .id(gameId)
                 .homeTeam("X")
                 .visitors(visitorsTeam)
                 .build();
