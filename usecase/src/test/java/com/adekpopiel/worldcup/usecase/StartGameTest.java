@@ -1,7 +1,6 @@
 package com.adekpopiel.worldcup.usecase;
 
 import com.adekpopiel.worldcup.domain.entity.Game;
-import com.adekpopiel.worldcup.usecase.exception.GameAlreadyExistException;
 import com.adekpopiel.worldcup.usecase.exception.GameValidationException;
 import com.adekpopiel.worldcup.usecase.port.DateFormatter;
 import com.adekpopiel.worldcup.usecase.port.GameRepository;
@@ -13,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

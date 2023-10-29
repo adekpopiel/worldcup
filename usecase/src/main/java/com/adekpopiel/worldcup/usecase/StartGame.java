@@ -1,7 +1,6 @@
 package com.adekpopiel.worldcup.usecase;
 
 import com.adekpopiel.worldcup.domain.entity.Game;
-import com.adekpopiel.worldcup.usecase.exception.GameAlreadyExistException;
 import com.adekpopiel.worldcup.usecase.port.DateFormatter;
 import com.adekpopiel.worldcup.usecase.port.GameRepository;
 import com.adekpopiel.worldcup.usecase.validation.GameValidator;
