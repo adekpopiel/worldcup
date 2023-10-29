@@ -50,17 +50,16 @@ class GameControllerTest {
     }
 
     @Test
-    public void testGameForStartHasProperId() {
+    public void testGameForStartHasNoId() {
         //given
         UUID gameId = UUID.randomUUID();
         GameDto newGame = new GameDto();
-        newGame.setId(gameId);
         Game expectedGame = Game.builder().id(gameId).build();
         //when
         when(startGameUseCase.startGame(any(Game.class))).thenReturn(expectedGame);
         gameController.startGame(newGame);
         //then
-        verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getId(), gameId)));
+        verify(startGameUseCase).startGame(argThat((Game game) -> Objects.equals(game.getId(), null)));
     }
 
     @Test
