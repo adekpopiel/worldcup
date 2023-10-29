@@ -4,12 +4,12 @@ import java.util.UUID;
 
 public class Game {
     private static final String GAME_TEMPLATE = "%s %d - %s %d";
-    private UUID id;
-    private String homeTeam;
-    private String visitors;
-    private Integer homeTeamScore;
-    private Integer visitorsScore;
-    private String startTime;
+    private final UUID id;
+    private final String homeTeam;
+    private final String visitors;
+    private final Integer homeTeamScore;
+    private final Integer visitorsScore;
+    private final String startTime;
 
     private Game(UUID id, String homeTeam, String visitors, Integer homeTeamScore, Integer visitorsScore, String startTime) {
         this.id = id;

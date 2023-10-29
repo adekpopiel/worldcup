@@ -27,9 +27,7 @@ public class PrintGame {
     }
 
     private Consumer<Game> printGame() {
-        Supplier<Consumer<Game>> consumerSupplier = () -> game -> {
-            printStream.println(game);
-        };
+        Supplier<Consumer<Game>> consumerSupplier = () -> game -> printStream.println(game);
         return consumerSupplier.get();
     }
 
